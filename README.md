@@ -26,9 +26,7 @@
 
 # Technical Manual
 
-The following contains the technical documentation for the various
-software and hardware parts of the project. The following sections are
-present:
+The following contains the technical documentation for the various software and hardware parts of the project. The following sections are present:
 1. [Pipeline](#pipeline)
 2. [Fine-tuning](#fine-tuning)
 3. [Audio Board](#audio-board)
@@ -54,15 +52,12 @@ All of the folders referred to here are stored in the home directory.
 
 ###  Installation
 
-To be able to build and run the model pipeline, first a Jetson device
-must be set up with Docker, CUDA and Jetpack SDK installed. The only
-Jetpack version tested is 6.2, but others should work as well. Once the
-device is setup the following needs to be done on the device:
+To be able to build and run the model pipeline, first a Jetson device must be set up with Docker, CUDA and Jetpack SDK installed. The only Jetpack version tested is 6.2, but others should work as well. Once the device is setup the following needs to be done on the device:
 
 ```bash
 # Setup docker build system
-git clone https://github.com/dusty-nv/Jetson-containers ~/Jetson-containers
-~/Jetson-containers/install.sh
+git clone https://github.com/dusty-nv/jetson-containers ~/jetson-containers
+~/jetson-containers/install.sh
 
 # Setup the code repositories
 
@@ -85,18 +80,11 @@ echo '{
 }' | sudo tee /etc/docker/daemon.json
 ```
 
-Furthermore, `./audio.py` will need to be modified to get use the correct
-device and format for the speaker and microphone.
+Furthermore, `./audio.py` will need to be modified to get use the correct device and format for the speaker and microphone.
 
-Additionally, all the `run_*` scripts uses a hard-coded path to allow
-running it from any user (required if running as daemon for the device
-deployment). Before using any of those scripts, please modify the path
-to match what is expected.
+Additionally, all the `run_*` scripts uses a hard-coded path to allow running it from any user (required if running as daemon for the device deployment). Before using any of those scripts, please modify the path to match what is expected.
 
-A single directory containing data, models and any files that need to be
-persisted is mounted as a volume to the docker container. By default
-this is the `~/cache` directory, but can be changed in the various
-`run_*` files. The following the expected structure of the volume:
+A single directory containing data, models and any files that need to be persisted is mounted as a volume to the docker container. By default this is the `~/cache` directory, but can be changed in the various `run_*` files. The following the expected structure of the volume:
 ```
 ├── data                                                | Extracted data
 │   ├── conversation
@@ -137,9 +125,7 @@ this is the `~/cache` directory, but can be changed in the various
 
 All the non auto-generated models can be downloaded from [here](https://huggingface.co/lutetium-vanadium/s2t-pipeline-models)
 
-If you expect to require converting a fine-tuned Whisper checkpoint to
-use `TensorRT`, then it is recommended to apply the first fix mentioned
-in the [troubleshooting section](#troubleshooting).
+If you expect to require converting a fine-tuned Whisper checkpoint to use `TensorRT`, then it is recommended to apply the first fix mentioned in the [troubleshooting section](#troubleshooting).
 
 ### Building
 
@@ -147,15 +133,9 @@ To build the pipeline, run the following:
 ```bash
 ./build.sh
 ```
-If you encounter any issue with the build system, check the
-[troubleshooting section](#troubleshooting) for any known issues.
+If you encounter any issue with the build system, check the [troubleshooting section](#troubleshooting) for any known issues.
 
-In order to convert Whisper model checkpoints, you can modify the
-environment variables defined in `./whisper-conversion/convert_trt.sh`
-to what you require and run it. Note that the source directory must
-contain two files: a copy of `./whisper-conversion/mel_filters.npz` and
-`{model}.pt` (a single checkpoint file) where `model` is the name of
-the model.
+In order to convert Whisper model checkpoints, you can modify the environment variables defined in `./whisper-conversion/convert_trt.sh` to what you require and run it. Note that the source directory must contain two files: a copy of `./whisper-conversion/mel_filters.npz` and `{model}.pt` (a single checkpoint file) where `model` is the name of the model.
 
 To convert NLLB-200 checkpoints, run the following:
 ```bash
@@ -175,12 +155,9 @@ There are 3 available bash scripts to run the model docker container.
 - `./run.sh` - same as `run_shell.sh` without an attached interactive
   TTY (see [running on boot](#run-on-boot)).
 
-These by default just execute a bash shell, however, if you pass arguments
-to the run script, the arguments will be interpreted as a command and be
-executed instead.
+These by default just execute a bash shell, however, if you pass arguments to the run script, the arguments will be interpreted as a command and be executed instead.
 
-The model pipeline can be ran by running the `main.py` file. It has the
-following important arguments.
+The model pipeline can be ran by running the `main.py` file. It has the following important arguments.
 ```
 usage: main.py [-h] [--file FILE] [--min-chunk-size MIN_CHUNK_SIZE]
                [--model_dir MODEL_DIR]
@@ -214,11 +191,9 @@ options:
 
 ### Run on boot
 
-If you want to run the pipeline as on boot (required during device
-deployment), then the following changes need to be made.
+If you want to run the pipeline as on boot (required during device deployment), then the following changes need to be made.
 
-- Apply `./Jetson-fixes/daemon-run.patch` so that the docker image can
-  run without expecting an interactive TTY attached.
+- Apply `./jetson-fixes/daemon-run.patch` so that the docker image can run without expecting an interactive TTY attached.
 
 - Setup the `systemd` service file for the pipeline in `/etc/systemd/system/pipeline.service`:
   ```
@@ -256,28 +231,17 @@ There are 3 tests:
 - `test_conversation.py` runs the tests on the [conversation dataset](https://huggingface.co/datasets/lutetium-vanadium/s2t-test-datasets/resolve/main/conversation.tar.gz?download=true), measure the accuracy metrics.
 - `test_latency.py` runs the tests on the [reduced-fleurs dataset](https://huggingface.co/datasets/lutetium-vanadium/s2t-test-datasets/resolve/main/reduced-fleurs.tar.gz?download=true), measuring the various latency metrics.
 
-> Before running the tests, make sure to download and extract the data
-> to the appropriate location in the mounted volume.
+> Before running the tests, make sure to download and extract the data to the appropriate location in the mounted volume.
 
 ### Troubleshooting
 
-Due to strict versioning and environment requirements, throughout the
-projects multiple build issues arose periodically, sometimes with no
-change to the codebase. Some of these required applying patches to the
-`Jetson-containers` install on the Jetson. It is recommended you try
-building and apply the patches only if you face an issue.
+Due to strict versioning and environment requirements, throughout the projects multiple build issues arose periodically, sometimes with no change to the codebase. Some of these required applying patches to the `jetson-containers` install on the Jetson. It is recommended you try building and apply the patches only if you face an issue.
 
-- If you require to convert a Whisper checkpoint`TensorRT-LLM`, then
-  copy `./Jetson-fixes/tensorrt_llm-source.tar.gz` to
-  `Jetson-containers/packages/llm/tensorrt_optimizer/tensorrt_llm/sources/source.tar.gz`.
-  This contains necessary changes to the conversion scripts to support
-  `whisper-turbo`.
-  > Note this is stored as a [Git LFS](https://git-lfs.com/) file, so if you need you will need
-  > to either manually download it or install git lfs and pull it.
-- If `TensorRT-LLM` fails to build because it cannot install
-  `diffusers`, then apply `./Jetson-fixes/tensorrt-diffusers.patch`.
-- If the test phase of `transformers` fails, then apply `./Jetson-fixes/transformers.patch`.
-- If Whisper gives the following issue, then apply `./Jetson-fixes/whisper.patch`.
+- If you require to convert a Whisper checkpoint`TensorRT-LLM`, then copy `./jetson-fixes/tensorrt_llm-source.tar.gz` to `jetson-containers/packages/llm/tensorrt_optimizer/tensorrt_llm/sources/source.tar.gz`. This contains necessary changes to the conversion scripts to support `whisper-turbo`.
+  > Note this is stored as a [Git LFS](https://git-lfs.com/) file, so if you need you will need to either manually download it or install git lfs and pull it.
+- If `TensorRT-LLM` fails to build because it cannot install `diffusers`, then apply `./jetson-fixes/tensorrt-diffusers.patch`.
+- If the test phase of `transformers` fails, then apply `./jetson-fixes/transformers.patch`.
+- If Whisper gives the following issue, then apply `./jetson-fixes/whisper.patch`.
   ```
   TypeError: scaled_dot_product_attention(): argument 'is_causal' must be bool, not Tensor
   ```
@@ -544,6 +508,12 @@ Solder the output terminals of the mini buck converter to ~5cm of wire, terminat
 These various connections use approximately ~5-10cm of wire.
 
 1. Apply heatshrink over exposed metal contacts.
+
+#### Buck Converter Configuration
+
+1. While using a multimeter to measure the output voltage, adjust the constant voltage trimmer potentiometer on the buck converter until the voltage measured is 12.7V.
+
+1. While using a multimeter to measure the output current, adjust the constant current trimmer potentiometer on the buck converter until the current measured is 1.5A.
 
 #### Battery holder/wiring
 <div align="center"><img src="cameraimages/PXL_20250412_162017264.jpg" width="75%" /></div>
