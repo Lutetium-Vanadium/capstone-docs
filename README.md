@@ -61,14 +61,16 @@ device is setup the following needs to be done on the device:
 
 ```bash
 # Setup docker build system
-git clone https://github.com/dusty-nv/jetson-containers ~/jetson-containers
-~/jetson-containers/install.sh
+git clone https://github.com/dusty-nv/Jetson-containers ~/Jetson-containers
+~/Jetson-containers/install.sh
 
 # Setup the code repositories
 
 # requires authentication to clone
-git clone https://github.com/Lutetium-Vanadium/speech-translation-pipeline ~/speech-translation-pipeline 
-# must be cloned in the same directory as speech-translation-pipeline (in this case we use the home directory)
+git clone https://github.com/Lutetium-Vanadium/speech-translation-pipeline \
+    ~/speech-translation-pipeline 
+# must be cloned in the same directory as speech-translation-pipeline
+# (in this case we use the home directory)
 git clone https://github.com/Lutetium-Vanadium/WhisperS2T ~/whisper_s2t
 
 # Fix for docker build system failing because it uses the wrong runtime to build the project
@@ -100,9 +102,11 @@ this is the `~/cache` directory, but can be changed in the various
 │   ├── conversation
 │   └── reduced-fleurs
 ├── models
-│   ├── models--segment-any-text--sat-3l-sm             | Sentence segmentation, should be auto generated when run
+│   ├── models--segment-any-text--sat-3l-sm             | Sentence segmentation, should be
+                                                        | auto generated when run
 │   ├── nllb
-│   │   └── models--facebook--nllb-200-distilled-600M   | NLLB tokenizer, should be auto-generated when run
+│   │   └── models--facebook--nllb-200-distilled-600M   | NLLB tokenizer, should be auto-generated
+                                                        | when run
 │   ├── nllb-ctranslate                                 | Location for CTranslate2 nllb checkpoint
 │   │   ├── config.json
 │   │   ├── model.bin
@@ -213,7 +217,7 @@ options:
 If you want to run the pipeline as on boot (required during device
 deployment), then the following changes need to be made.
 
-- Apply `./jetson-fixes/daemon-run.patch` so that the docker image can
+- Apply `./Jetson-fixes/daemon-run.patch` so that the docker image can
   run without expecting an interactive TTY attached.
 
 - Setup the `systemd` service file for the pipeline in `/etc/systemd/system/pipeline.service`:
@@ -260,20 +264,20 @@ There are 3 tests:
 Due to strict versioning and environment requirements, throughout the
 projects multiple build issues arose periodically, sometimes with no
 change to the codebase. Some of these required applying patches to the
-`jetson-containers` install on the Jetson. It is recommended you try
+`Jetson-containers` install on the Jetson. It is recommended you try
 building and apply the patches only if you face an issue.
 
 - If you require to convert a Whisper checkpoint`TensorRT-LLM`, then
-  copy `./jetson-fixes/tensorrt_llm-source.tar.gz` to
-  `jetson-containers/packages/llm/tensorrt_optimizer/tensorrt_llm/sources/source.tar.gz`.
+  copy `./Jetson-fixes/tensorrt_llm-source.tar.gz` to
+  `Jetson-containers/packages/llm/tensorrt_optimizer/tensorrt_llm/sources/source.tar.gz`.
   This contains necessary changes to the conversion scripts to support
   `whisper-turbo`.
   > Note this is stored as a [Git LFS](https://git-lfs.com/) file, so if you need you will need
   > to either manually download it or install git lfs and pull it.
 - If `TensorRT-LLM` fails to build because it cannot install
-  `diffusers`, then apply `./jetson-fixes/tensorrt-diffusers.patch`.
-- If the test phase of `transformers` fails, then apply `./jetson-fixes/transformers.patch`.
-- If Whisper gives the following issue, then apply `./jetson-fixes/whisper.patch`.
+  `diffusers`, then apply `./Jetson-fixes/tensorrt-diffusers.patch`.
+- If the test phase of `transformers` fails, then apply `./Jetson-fixes/transformers.patch`.
+- If Whisper gives the following issue, then apply `./Jetson-fixes/whisper.patch`.
   ```
   TypeError: scaled_dot_product_attention(): argument 'is_causal' must be bool, not Tensor
   ```
@@ -300,7 +304,8 @@ Code repository containing code for finetuning and evaluating models for the Cro
 │   ├── nllb-evaluate-example.py
 │   │   └── Example script showing how to evaluate using NLLB models on sample data.
 │   ├── nllb-evaluate-fleurs-reduced-on-whisper-preds.py
-│   │   └── Evaluates NLLB translations against Whisper-generated predictions on a reduced FLEURS dataset.
+│   │   └── Evaluates NLLB translations against Whisper-generated predictions on a
+│   │       reduced FLEURS dataset.
 │   ├── nllb-evaluate-fleurs-reduced.py
 │   │   └── Evaluates NLLB model outputs directly on the reduced FLEURS dataset.
 │   ├── nllb-evaluate-with-comet.py
@@ -486,7 +491,7 @@ The current schematic and layout used for manufacturing underwent 2 real-life mo
 
    ![][image2]
 
-3. Navigate to the Jetson Expansion Header Tool by running the command `$ sudo /opt/nvidia/jetson-io/jetson-io.py`
+3. Navigate to the Jetson Expansion Header Tool by running the command `$ sudo /opt/nvidia/Jetson-io/Jetson-io.py`
 
    ![][image3]
 
@@ -521,131 +526,155 @@ More importantly, integrating such a USB audio codec could enable audio loopback
 ### Component Assembly
 The following section describes several components which require preparation or modification before proceeding with the final assembly.
 #### Switch Wiring
-![](cameraimages/PXL_20250412_164535662.jpg)
+<div align="center"><img src="cameraimages/PXL_20250412_164535662.jpg" width="75%" /></div>
 Solder ~20cm of wire to 2 XT30 female connectors, with the ends connected to the switch as shown. Apply heatshrink over exposed metal contacts. Label the XT30 connector with only one terminal SW1, and the XT30 connector with two terminals SW2, as shown.
 
 #### Connector Wiring
-![](cameraimages/PXL_20250412_161134422.jpg)
-Solder an XT30 connector to the output of the mini buck converter using ~5cm of wire.
-
-![](cameraimages/PXL_20250412_161228615.jpg)
-![](cameraimages/PXL_20250412_161252844.jpg)
-Solder the remaining connections as shown in the two images above. The ground wire is connected to the mini buck converter's input, the DC barrel jack, the fan, the XT30 female connector labelled BAT, and the XT30 male connector labelled SW2.
-
-Solder the 12V connection between the male XT30 connector labelled SW2 and the female XT30 connector labelled SW2.
-
-Solder together a 12V wire between the mini buck converter's input, the DC barrel jack, the fan, and the XT30 male connector labelled SW1.
-These various connections use approximately ~5-10cm of wire.
+<div align="center"><img src="cameraimages/PXL_20250412_161134422.jpg" width="75%" /></div>
 
 Solder the output terminals of the mini buck converter to ~5cm of wire, terminating in an XT30 female connector, labelled ESP.
 
-Apply heatshrink over exposed metal contacts.
+<div align="center"><img src="cameraimages/PXL_20250412_161228615.jpg" width="75%" /></div>
+<div align="center"><img src="cameraimages/PXL_20250412_161252844.jpg" width="75%" /></div>
+1. Solder the remaining connections as shown in the two images above. The ground wire is connected to the mini buck converter's input, the DC barrel jack, the fan, the XT30 female connector labelled BAT, and the XT30 male connector labelled SW2.
+
+1. Solder the 12V connection between the male XT30 connector labelled SW2 and the female XT30 connector labelled BAT.
+
+1. Solder together a 12V wire between the mini buck converter's input, the DC barrel jack, the fan, and the XT30 male connector labelled SW1.
+These various connections use approximately ~5-10cm of wire.
+
+1. Apply heatshrink over exposed metal contacts.
 
 #### Battery holder/wiring
-![](cameraimages/PXL_20250412_162017264.jpg)
-Solder the discharge pads on the BMS to ~15-20cm of wire, connected to an XT30 male connector labelled BAT.
+<div align="center"><img src="cameraimages/PXL_20250412_162017264.jpg" width="75%" /></div>
+1. Solder the discharge pads on the BMS to ~15-20cm of wire, connected to an XT30 male connector labelled BAT.
 
-![](cameraimages/PXL_20250412_162043061.jpg)
-Solder the batteries in a 3S configuration (connect positive terminal to negative terminal). Solder the 0V, 4.2V, 8.4V, and 12.6V pads to their respective battery terminals as shown. Use ~10-20cm of wire for the pads on the left (0V, 8.4V, charge positive, charge ground), and ~25-40cm of wire for the pads on the right (4.2V, 12.6V).
+<div align="center"><img src="cameraimages/PXL_20250412_162043061.jpg" width="75%" /></div>
 
-Apply kapton tape on the exposed terminals and fit into battery holder as shown. Fit the buck converter into the battery holder as shown. Wrap ~1cm thick kapton tape around the batteries through the slot in the battery holder.
+2. Solder the batteries in a 3S configuration (connect positive terminal to negative terminal). Solder the 0V, 4.2V, 8.4V, and 12.6V pads to their respective battery terminals as shown. Use ~10-20cm of wire for the pads on the left (0V, 8.4V, charge positive, charge ground), and ~25-40cm of wire for the pads on the right (4.2V, 12.6V).
 
-![](cameraimages/PXL_20250412_162111777.jpg)
-Solder the charge terminals to ~20cm of wire. Solder the positive wire to the Schottky diode. Screw the positive and ground wires into the respective screw terminals on the buck converter's output terminals.
+2. Apply kapton tape on the exposed terminals and fit into battery holder as shown. Fit the buck converter into the battery holder as shown. Wrap ~1cm thick kapton tape around the batteries through the slot in the battery holder.
 
-![](cameraimages/PXL_20250412_162152136.jpg)
-Solder the USB-C trigger output terminals to ~15cm of wire, and screw the wires into the respective screw terminals on the buck converter's input terminals.
+<div align="center"><img src="cameraimages/PXL_20250412_162111777.jpg" width="75%" /></div>
+
+4. Solder the charge terminals to ~20cm of wire. Solder the positive wire to the Schottky diode. Screw the positive and ground wires into the respective screw terminals on the buck converter's output terminals.
+
+<div align="center"><img src="cameraimages/PXL_20250412_162152136.jpg" width="75%" /></div>
+
+5. Solder the USB-C trigger output terminals to ~15cm of wire, and screw the wires into the respective screw terminals on the buck converter's input terminals.
 
 #### Screen modification
-![](cameraimages/PXL_20250412_162317757.jpg)
-Remove the GPIO_D and I2C headers on the screen.
+<div align="center"><img src="cameraimages/PXL_20250412_162317757.jpg" width="75%" /></div>
 
-![](cameraimages/PXL_20250412_162333928.jpg)
-Remove the BAT header on the screen. Solder ~5cm of wire connected to an XT30 male connector labelled ESP.
+1. Remove the GPIO_D and I2C headers on the screen.
 
-![](cameraimages/PXL_20250412_162416801.jpg)
-Remove the USB-UART module header pins. Solder ~20cm of wire to the GND, RXD, and TXD pins as shown.
+<div align="center"><img src="cameraimages/PXL_20250412_162333928.jpg" width="75%" /></div>
 
-![](cameraimages/PXL_20250412_162427825.jpg)
-Crimp the other wire ends into a 4-pin grove connector as shown. Connect it to the UART header on the screen.
+2. Remove the BAT header on the screen. Solder ~5cm of wire connected to an XT30 male connector labelled ESP.
 
-![](cameraimages/PXL_20250412_162658622.jpg)
+<div align="center"><img src="cameraimages/PXL_20250412_162416801.jpg" width="75%" /></div>
+
+3. Remove the USB-UART module header pins. Solder ~20cm of wire to the GND, RXD, and TXD pins as shown.
+
+<div align="center"><img src="cameraimages/PXL_20250412_162427825.jpg" width="75%" /></div>
+
+4. Crimp the other wire ends into a 4-pin grove connector as shown. Connect it to the UART header on the screen.
+
+<div align="center"><img src="cameraimages/PXL_20250412_162658622.jpg" width="75%" /></div>
 Completed screen modification.
 
 
 ### Final assembly
 ![](fusionimages/1.png)
 ![](fusionimages/2.png)
-Place the screen in the bezel as shown. Screw in a M2 5mm screw into the highlighted hole.
+
+1. Place the screen in the bezel as shown. Screw in a M2 5mm screw into the highlighted hole.
 
 ![](fusionimages/3.png)
-Place the assembled battery holder and jetson holder on the bezel as shown
 
-Screw in M2 12mm screws into the 3 holes highligted in red.
+2. Place the assembled battery holder and Jetson holder on the bezel as shown
 
-Place the BMS as shown, highlighted in blue. Secure with kapton tape.
+3. Screw in M2 12mm screws into the 3 holes highligted in red.
 
-![](cameraimages/PXL_20250412_163133047.jpg)
+4. Place the BMS as shown, highlighted in blue. Secure with kapton tape.
+
+<div align="center"><img src="cameraimages/PXL_20250412_163133047.jpg" width="75%" /></div>
 Secured batteries and BMS
 
 ![](fusionimages/4.png)
-Place the USB-C trigger as shown. Secure with kapton tape.
-![](cameraimages/PXL_20250412_163323040.jpg)
+
+5. Place the USB-C trigger as shown. Secure with kapton tape.
+<div align="center"><img src="cameraimages/PXL_20250412_163323040.jpg" width="75%" /></div>
 Secured USB-C trigger
 
 ![](fusionimages/5.png)
-Insert the mini buck converter as shown. Secure with kapton tape.
+
+6. Insert the mini buck converter as shown. Secure with kapton tape.
 
 ![](fusionimages/6.png)
-Insert the buck converter as shown. Secure with kapton tape.
 
-![](cameraimages/PXL_20250412_163342346.jpg)
+7. Insert the buck converter as shown. Secure with kapton tape.
+
+<div align="center"><img src="cameraimages/PXL_20250412_163342346.jpg" width="75%" /></div>
 Secured mini buck converter
 
-![](cameraimages/PXL_20250412_163354188.jpg)
-Connect the XT30 connectors labelled ESP
+<div align="center"><img src="cameraimages/PXL_20250412_163354188.jpg" width="75%" /></div>
+
+8. Connect the XT30 connectors labelled ESP
 
 ![](fusionimages/7.png)
-Place the audio PCB in the slot as shown in red. Secure with blu-tack adhesive.
-Place the speaker in the slot as shown in blue. Screw in M2 5mm screws into the 2 holes the speaker is placed over.
 
-![](cameraimages/PXL_20250412_162517362.jpg)
-Connect the speaker and USB-C cable to the PCB as shown.
+9. Place the audio PCB in the slot as shown in red. Secure with blu-tack adhesive.
+10. Place the speaker in the slot as shown in blue. Screw in M2 5mm screws into the 2 holes the speaker is placed over.
+
+<div align="center"><img src="cameraimages/PXL_20250412_162517362.jpg" width="75%" /></div>
+
+11. Connect the speaker and USB-C cable to the PCB as shown.
 
 ![](fusionimages/8.png)
-Place the assembled jetson on the jetson holder as shown.
-Screw in M2 5mm screws into the 2 holes highlighted in red.
-Screw in M2 20mm screws into the 2 holes highlighted in blue.
+
+12. Place the assembled Jetson on the Jetson holder as shown.
+13. Screw in M2 5mm screws into the 2 holes highlighted in red.
+14. Screw in M2 20mm screws into the 2 holes highlighted in blue.
 
 ![](fusionimages/9.png)
-If using custom cooling solution, place the fan as shown. Screw in M2 5mm screws into the 2 holes the fan is placed over.
 
-![](cameraimages/PXL_20250412_164011976.jpg)
-![](cameraimages/PXL_20250412_161405987.jpg)
-Connect the PCB wires to the 40-pin header on the jetson as shown.
+15. If using custom cooling solution, place the fan as shown. Screw in M2 5mm screws into the 2 holes the fan is placed over.
 
-![](cameraimages/PXL_20250412_164044292.MP.jpg)
-Connect the USB-C cable to the jetson as shown.
+<div align="center"><img src="cameraimages/PXL_20250412_164011976.jpg" width="75%" /></div>
+<div align="center"><img src="cameraimages/PXL_20250412_161405987.jpg" width="75%" /></div>
 
-![](cameraimages/PXL_20250412_164111772.jpg)
-Connect the USB-UART module to the jetson as shown.
+16. Connect the PCB wires to the 40-pin header on the Jetson as shown.
 
-![](cameraimages/PXL_20250412_164239335.jpg)
-Connect the DC barrel jack to the jetson as shown.
+<div align="center"><img src="cameraimages/PXL_20250412_164044292.MP.jpg" width="75%" /></div>
 
-![](cameraimages/PXL_20250412_164321829.MP.jpg)
-Connect the XT30 connectors labelled BAT.
+17. Connect the USB-C cable to the Jetson as shown.
 
-![](cameraimages/PXL_20250412_164547659.jpg)
-![](cameraimages/PXL_20250412_164559097.jpg)
-Place the switch into the back as shown.
+<div align="center"><img src="cameraimages/PXL_20250412_164111772.jpg" width="75%" /></div>
 
-![](cameraimages/PXL_20250412_164633122.jpg)
-Connect the XT30 connectors labelled SW1. Connect the XT30 connectors labelled SW2.
+18. Connect the USB-UART module to the Jetson as shown.
+
+<div align="center"><img src="cameraimages/PXL_20250412_164239335.jpg" width="75%" /></div>
+
+19. Connect the DC barrel jack to the Jetson as shown.
+
+<div align="center"><img src="cameraimages/PXL_20250412_164321829.MP.jpg" width="75%" /></div>
+
+20. Connect the XT30 connectors labelled BAT.
+
+<div align="center"><img src="cameraimages/PXL_20250412_164547659.jpg" width="75%" /></div>
+<div align="center"><img src="cameraimages/PXL_20250412_164559097.jpg" width="75%" /></div>
+
+21. Place the switch into the back as shown.
+
+<div align="center"><img src="cameraimages/PXL_20250412_164633122.jpg" width="75%" /></div>
+
+22. Connect the XT30 connectors labelled SW1. Connect the XT30 connectors labelled SW2.
 
 ![](fusionimages/10.png)
-![](cameraimages/PXL_20250412_164707786.jpg)
-Enclose the device with the back
+<div align="center"><img src="cameraimages/PXL_20250412_164707786.jpg" width="75%" /></div>
+
+23. Enclose the device with the back
 
 ![](fusionimages/11.png)
-Screw in M2 6mm screws into the 2 highlighted holes.
+24. Screw in M2 6mm screws into the 2 highlighted holes.
