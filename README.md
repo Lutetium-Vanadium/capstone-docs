@@ -1,22 +1,22 @@
 # User Manual
 
 <div>
-  <img src="./usermanual_pics/power_on.png" alt="Trulli" style="width:100%">
+  <img src="./usermanual_pics/power_on.png" style="width:100%">
   <div align="center">
     1. Power On Device
   </div>
   <br/> <br/>
-  <img src="./usermanual_pics/select_language_and_confirm.png" alt="Trulli" style="width:100%">
+  <img src="./usermanual_pics/select_language_and_confirm.png" style="width:100%">
   <div align="center">
      2. Select Language and Confirm   
   </div>
   <br/> <br/>
-  <img src="./usermanual_pics/speak_to_translate.png" alt="Trulli" style="width:100%">
+  <img src="./usermanual_pics/speak_to_translate.png" style="width:100%">
   <div align="center">
     3. Speak to Translate
   </div>
   <br/> <br/>
-  <img src="./usermanual_pics/return_to_language_select.png" alt="Trulli" style="width:100%">
+  <img src="./usermanual_pics/return_to_language_select.png" style="width:100%">
   <div align="center">
      4. Option to Return to Language Selection
    </div>
