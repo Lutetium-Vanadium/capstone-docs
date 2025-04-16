@@ -31,18 +31,23 @@ software and hardware parts of the project. The following sections are
 present:
 1. [Pipeline](#pipeline)
 2. [Fine-tuning](#fine-tuning)
-3. [Bill of Materials](#bill-of-materials)
 3. [Audio Board](#audio-board)
 4. [Audio Board Setup](#audio-board-setup)
-4. [3D Files](#3d-files)
-4. [Hardware Assembly](#hardware-assembly)
+5. [3D Files](#3d-files)
+6. [Hardware Assembly](#hardware-assembly)
+
+## File contents on the KLASS laptop
+
+All of the folders referred to here are stored in the home directory.
 
 |Folder|Contents|
 |---|---|
 | 3D Files | 3D CAD and print files for hardware components |
-| Audio\_board| Printed Circuit Board (PCB) related files |
+| Audio\_board | Printed Circuit Board (PCB) related files |
+| BOM.xlsx | Bill of materials |
 | CrowPanel_ESP32_7.0 | Files for developing Screen UI, flashed to the CrowPanel ESP32 Screen |
 | speech-translation-pipeline | The source code for the AI model pipeline |
+| speech-translation-capstone-finetune | The source code for the AI model fine-tuning |
 | SquarelineStudioUI | Files for developing Screen UI, layout design in Squareline Studio 1.4.2 |
 
 ## Pipeline
@@ -115,7 +120,7 @@ this is the `~/cache` directory, but can be changed in the various
 │   │   ├── mms-tts-ind
 │   │   ├── mms-tts-tgl
 │   │   ├── mms-tts-tha
-│   │   ├── mms-tts-vieTODO
+│   │   ├── mms-tts-vie
 │   │   ├── mms-tts-zlm
 │   │   └── vits-cmn
 │   ├── whisper_turbo                                   | Default location for whisper with
@@ -275,34 +280,171 @@ building and apply the patches only if you face an issue.
 
 ## Fine-tuning
 
-TODO
+Code repository containing code for finetuning and evaluating models for the CrossTalk Secure project.
 
-## Bill of Materials
-TODO
-| Index | ITEMS (HARDWARE) | Quantity  | Cost per unit | Link from Vendor  | Remark | Cost |
-| :---- | :---- | :---- | :---- | :---- | :---- | :---- |
-| 1 | 20\*14mm Ultra-thin Side-emitting Cavity Speaker 8ohm 0.5-2W | 1 | $2.23 | https://www.aliexpress.com/item/1005004431389186.html?spm=a2g0o.detail.pcDetailTopMoreOtherSeller.6.2004QljoQljocJ\&gps-id=pcDetailTopMoreOtherSeller\&scm=1007.40050.354490.0\&scm\_id=1007.40050.354490.0\&scm-url=1007.40050.354490.0\&pvid=fde48253-9934-41ff-94c3-c49ce7e34490&\_t=gps-id:pcDetailTopMoreOtherSeller,scm-url:1007.40050.354490.0,pvid:fde48253-9934-41ff-94c3-c49ce7e34490,tpp\_buckets:668%232846%238115%232000\&pdp\_npi=4%40dis%21SGD%214.93%212.23%21%21%213.65%211.65%21%402141122217291864546591855e890c%2112000029161744393%21rec%21SG%21%21ABXZ\&utparam-url=scene%3ApcDetailTopMoreOtherSeller%7Cquery\_from%3A |  | 2.23 |
-| 2 | 4010 12v/24v cooler cooling fan blower 2 Pin | 1 | $5.80 | https://www.aliexpress.com/item/4001080434013.html?spm=a2g0o.productlist.main.15.7e6158beJfPWS8\&algo\_pvid=c33ebe12-994a-48ae-bfdf-bd27688ac8eb\&aem\_p4p\_detail=202410172202401243022510771160004269754\&algo\_exp\_id=c33ebe12-994a-48ae-bfdf-bd27688ac8eb-7\&pdp\_npi=4%40dis%21SGD%218.69%216.78%21%21%216.42%215.01%21%4021015c7617292277600205696e84ac%2112000017755013245%21sea%21SG%210%21ABX\&curPageLogUid=NQtyeIUac71O\&utparam-url=scene%3Asearch%7Cquery\_from%3A\&search\_p4p\_id=202410172202401243022510771160004269754\_2\#nav-specification |  | 5.8 |
-| 3 | 40\*40\*11mm Heatsink | 1 | $1.54 | https://www.aliexpress.com/item/1005006407762017.html?spm=a2g0o.productlist.main.93.64604efaAWHNDd\&algo\_pvid=d618a318-4ca2-4eb6-a180-d338d744fda0\&algo\_exp\_id=d618a318-4ca2-4eb6-a180-d338d744fda0-46\&pdp\_npi=4%40dis%21SGD%211.54%211.54%21%21%218.10%218.10%21%4021015c7617292740744866628e5619%2112000037056456372%21sea%21SG%210%21ABX\&curPageLogUid=pkaLW8fed8Zr\&utparam-url=scene%3Asearch%7Cquery\_from%3A |  | 1.54 |
-| 4 | 4TB SSD | 1 | $331.00 | https://www.lazada.sg/products/crucial-p3-plus-pcie-40-3d-nand-nvme-m2-ssd-ctxxxp3pssd8-i2443341715-s14474320975.html? | Storage for training data | 331 |
-| 5 | CrowPanel 7.0" \-HMI ESP32 Display | 1 | $45.55 | https://www.elecrow.com/esp32-display-7-inch-hmi-display-rgb-tft-lcd-touch-screen-support-lvgl.html |  | 45.55 |
-| 6 | 22 AWG wire | 1 | $11.05 | https://www.aliexpress.com/item/1005005888991575.html?spm=a2g0o.productlist.main.1.6cec9Nsx9NsxPG\&algo\_pvid=adf87429-8ac6-4411-beb8-70eeec7d3cfb\&algo\_exp\_id=adf87429-8ac6-4411-beb8-70eeec7d3cfb-0\&pdp\_ext\_f=%7B%22order%22%3A%223309%22%2C%22eval%22%3A%221%22%7D\&pdp\_npi=4%40dis%21SGD%216.32%216.32%21%21%2134.10%2134.10%21%40213bd97f17447231845696173e7826%2112000034717501746%21sea%21SG%216069331024%21X\&curPageLogUid=6Fhvjvwl9Nms\&utparam-url=scene%3Asearch%7Cquery\_from%3A |  | 11.05 |
-| 7 | CP2102 USB to UART | 1 | $11.99 | https://askelectronic.com/ | Purchased from physical store | 11.99 |
-| 8 | M2 Screws 4mm-20mm | 1 | $13.61 | https://www.aliexpress.com/item/4001072025844.html?spm=a2g0o.order\_detail.order\_detail\_item.4.5a9df19cvMea0Q |  | 13.61 |
-| 9 | Kapton tape | 1 | $4.50 | https://www.aliexpress.com/item/1005007518587827.html?spm=a2g0o.order\_detail.order\_detail\_item.4.6bc7f19cbkQg5K |  | 4.5 |
-| 10 | Jetson Orin NX 16GB | 1 | $1,396.98 | https://sg.element14.com/seeed-studio/110110145/recomputer-j4012-edge-ai-device/dp/4200148 |  | 1396.98 |
-| 11 | BMS 60A Balanced | 1 | $3.86 | https://www.aliexpress.com/item/1005006906778570.html?spm=a2g0o.order\_list.order\_list\_main.23.65891802ZWjo3r |  | 3.86 |
-| 12 | CC/CV Buck Converter | 1 | $6.12 | https://www.aliexpress.com/item/1005006700914240.html?spm=a2g0o.order\_list.order\_list\_main.41.65891802ZWjo3r |  | 6.12 |
-| 13 | USB-C trigger | 1 | $3.05 | https://www.aliexpress.com/item/1005007889747084.html?spm=a2g0o.order\_list.order\_list\_main.40.65891802ZWjo3r |  | 3.05 |
-| 14 | pcb mic/speaker | 1 | $169.00 | NIL | Refer to Audio | 169 |
-| 15 | batteries 21700 | 1 | $41.44 | https://shopee.sg/Samsung-50S-21700-5000mah-25A-3.7V-Li-ion-Rechargeable-Cell-i.607079901.23414128175 |  | 41.44 |
-| 16 | mini dc step down | 1 | $14.59 | https://shopee.sg/DC-DC-Step-Down-Buck-Converter-3.3V-5V-12V-(3A)-i.440521573.23246695217?xptdk=8e8f4b62-ad5d-45b9-bc19-ad9114e600b8 |  | 14.59 |
-| 17 | USB-C short angled cable | 1 | $10.89 | https://shopee.sg/L-Shape-USB-Type-C-Cable-90-Degree-Fast-Charge-Data-60W-PD-4.0-Short-Cable-for-Mobile-Tablet-Laptop-Mac-i.804140.12996128561?xptdk=22711e09-5882-46c8-a854-b30f56242955 |  | 10.89 |
-| 18 | 12V DC Rocker Switch | 1 | $3.00 | https://continental.sg/ | Purchased from physical store | 3 |
-| 19 | XT30 Connectors Male+ Female | 4 | $1.00 | https://continental.sg/ | Purchased from physical store | 4 |
-| 20 | PETG-CF | 1 | $42.13 | https://asia.store.bambulab.com/products/petg-cf |  | 42.13 |
-| 21 | PLA | 1 | $30.27 | https://asia.store.bambulab.com/products/pla-matte |  | 30.27 |
-|  | Estimated Total  |  | $2,152.60 |  |  |  |
+```
+├── preprocessing                                       | Preprocessing notebooks for data
+│   ├── fleurs-subsets-upload.ipynb 
+│   ├── parse_magichub_datasets.ipynb 
+│   └── parse_translation_datasets.ipynb 
+├── finetuning 
+│   ├── nllb-finetune-lora-balanced-multi-corpora.py
+│   │   └── Finetune NLLB using LoRA on balanced multilingual corpora.
+│   ├── whisper-finetune-lora-cross-val.py
+│   │   └── Finetune Whisper with LoRA using cross-validation monolingual subsets.
+│   ├── whisper-finetune-lora-unified.py 
+│   │   └── Finetune Whisper with LoRA on a unified multilingual dataset.
+│   └── whisper-finetune-full-unified.py
+│       └── Full finetune of Whisper on unified multilingual dataset.
+├── evaluation
+│   ├── nllb-evaluate-example.py
+│   │   └── Example script showing how to evaluate using NLLB models on sample data.
+│   ├── nllb-evaluate-fleurs-reduced-on-whisper-preds.py
+│   │   └── Evaluates NLLB translations against Whisper-generated predictions on a reduced FLEURS dataset.
+│   ├── nllb-evaluate-fleurs-reduced.py
+│   │   └── Evaluates NLLB model outputs directly on the reduced FLEURS dataset.
+│   ├── nllb-evaluate-with-comet.py
+│   │   └── Uses COMET scoring to evaluate NLLB translation quality.
+│   ├── whisper-evaluate-ctranslate2.py
+│   │   └── Evaluates Whisper outputs generated with CTranslate2 backend.
+│   ├── whisper-evaluate-fleurs-reduced-ctranslate2.py
+│   │   └── Evaluates Whisper (CTranslate2) predictions on the reduced FLEURS dataset.
+│   └── whisper-evaluate-fleurs-reduced.py
+│       └── Evaluates Whisper model outputs on the reduced FLEURS dataset (transformers backend).
+├── .gitignore
+├── README.md
+├── jfk.flac
+├── whisper_lib.py
+├── merge-and-upload.py
+├── convert-to-pt.py
+└── requirements.txt
+```
+
+### Setup
+
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/keeve101/speech-translation-capstone-finetune.git
+   cd speech-translation-capstone-finetune
+   ```
+
+2. **Create and activate a virtual environment (optional but recommended)**  
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # or venv\Scripts\activate on Windows
+   ```
+
+3. **Install dependencies**  
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Utilities
+
+- `convert-to-pt.py`  
+  Converts raw or intermediate model outputs to `.pt` format for compatibility with evaluation scripts.
+
+- `merge-and-upload.py`  
+  Merges prediction files and uploads them to cloud or experiment tracking services.
+
+- `whisper_lib.py`  
+  Core utility library used by Whisper fine-tuning and evaluation scripts (e.g., data loading, preprocessing, decoding).
+
+- `jfk.flac`  
+  Sample audio file (John F. Kennedy speech) used for testing inference pipelines on the evaluate example scripts.
+
+### Finetuning
+
+See the [`finetuning`](./finetuning) directory for training scripts:
+- Scripts use either **LoRA** for lightweight updates or full fine-tuning.
+- You can modify corpus paths, model configs, or training settings directly in each script.
+
+### Evaluation
+
+Evaluation scripts are in the [`evaluation`](./evaluation) folder and include:
+- BLEU and COMET-based scoring
+- Support for Whisper and NLLB models
+- CTranslate2 and Transformers inference backends
+
+### Preprocessing
+
+The [`preprocessing`](./preprocessing) notebooks:
+- Upload and slice subsets of the FLEURS dataset
+- Parse open-source datasets (e.g., MagicHub)
+- Normalize and prepare text-to-text and speech-to-text corpora
+
+### Usage
+
+#### Finetune Whisper/NLLB:
+The `model_path` parameter in the script will be used to load the model checkpoint. 
+
+To run finetuning on the original Whisper model or to continue training from an existing checkpoint you can use the following command:
+```bash
+python finetuning/whisper-finetune-lora-unified.py 
+```
+
+To run finetuning on the original NLLB-200 model or to continue training from an existing checkpoint you can use the following command:
+```bash
+python finetuning/nllb-finetune-lora-balanced-multi-corpora.py
+```
+
+The `output_dir` parameter in the script will be used to save the model checkpoints. Be sure to change the `output_dir` parameter if you intend on training multiple models.
+
+#### Merging LoRA adapters to model checkpoints:
+The `merge-and-upload.py` script can be used to merge LoRA adapters to model checkpoints and upload the merged checkpoints to the Hugging Face Hub:
+```bash
+python merge-and-upload.py \
+  --model openai/whisper-large-v3-turbo \
+  --adapter_path output-unified-weighted-random-sampler-full-finetune-v2/\
+  --repo_owner keeve101 \
+  --convert_to_pt True
+```
+The merged model will be saved onto the `merged_model_path` parameter in the script, initialized as the model path's base name. The `repo_id` parameter `{repo_owner}/{model_name}` will be the repository path on the Hugging Face Hub.
+
+#### Evaluate Whisper/NLLB on FLEURS subset:
+To run evaluation on the original NLLB-200 model or a finetuned version, you can use the following command:
+```bash
+python evaluation/nllb-evaluate-fleurs-reduced.py \
+  --model_name keeve101/nllb-200-distilled-600M-finetune-lora-balanced-multi-corpora-checkpoint-100925
+```
+
+To run evaluation on the original Whisper model or a finetuned version, you can use the following command:
+```bash
+python evaluation/nllb-evaluate-fleurs-reduced.py \
+  --model_name keeve101/whisper-large-v3-turbo-full-finetune-unified-checkpoint-2400
+```
+The corresponding evaluation results will be saved onto the `output_file_path` parameter in the script. By default, the parameter is set to `{model_name}-eval.json`.
+
+To support Whisper models on the CTranslate2 backend, you can use the following command to run evaluation on Whisper models with on the CTranslate2 backend:
+```bash
+python evaluation/whisper-evaluate-fleurs-reduced-ctranslate2.py \
+  --model_path keeve101/whisper-large-v3-turbo-full-finetune-unified-checkpoint-2400 \
+  --device cuda \ 
+  --compute_type int8_float16
+```
+The converted model will be saved onto the `output_dir` parameter in the script, with the path `{ctranslate2-models/{model_name}`. Conversion will be done using the `ct2-transformers-converter` API from the [CTranslate2 Python library](https://github.com/OpenNMT/CTranslate2). Conversion will not be done if the `output_dir` directory already exists.
+
+#### Evaluate NLLB on FLEURS subset (using COMET):
+After running the initial evaluation scripts, you can further evaluate the sources (in original language), references (in target language) and predictions (in target language) using the COMET scoring script:
+```bash
+python evaluation/nllb-evaluate-with-comet.py \
+  --whisper_modeL_used keeve101/whisper-large-v3-turbo-full-finetune-unified-checkpoint-2400 \
+  --nllb_model_used facebook/nllb-200-distilled-600M
+```
+
+### Notes
+#### Previous Finetuning Run Statistics
+
+| Model Name                                             | Script Used                                    | Batch Size | Grad Accum Steps | GPUs Used      | Notes                                      |
+|--------------------------------------------------------|------------------------------------------------|------------|------------------|----------------|--------------------------------------------|
+| whisper-large-v3-turbo-full-finetune-unified           | `whisper-finetune-full-unified.py`             | 64         | 1                | 1×L40S (48GB)  | Full finetuning on unified multilingual set |
+| whisper-large-v3-turbo-lora-unified                    | `whisper-finetune-lora-unified.py`             | 16         | 2               | 1×V100 (32GB)  | Lightweight finetuning using LoRA          |
+| nllb-200-distilled-600M-lora-balanced-multi-corpora    | `nllb-finetune-lora-balanced-multi-corpora.py` | 4         | 2                | 1×V100 (32GB)  | Balanced multilingual corpora              |
+- Python version used: 3.11
+- CUDA version used: 12.8.1
+- The batch size and gradient accumulation steps were chosen both empirically and based on recommedations from Whisper authors at [whisper-fine-tune-event](https://github.com/huggingface/community-events/tree/main/whisper-fine-tuning-event).
+- According to Whisper authors, the learning rate for finetuning is set to 40x less the initial learning rate used to train the corresponding Whisper model.
+- It may also be good to scale the learning rate according to the effective batch size (effective batch size = batch size * gradient accumulation steps). E.g., if you double the effective batch size, you may consider doubling the learning rate as well.
 
 ## Audio Board 
 
@@ -377,7 +519,7 @@ More importantly, integrating such a USB audio codec could enable audio loopback
 
 ## Hardware Assembly
 ### Component Assembly
-The following section describes several components which require preparation or midification before proceeding with the final assembly.
+The following section describes several components which require preparation or modification before proceeding with the final assembly.
 #### Switch Wiring
 ![](cameraimages/PXL_20250412_164535662.jpg)
 Solder ~20cm of wire to 2 XT30 female connectors, with the ends connected to the switch as shown. Apply heatshrink over exposed metal contacts. Label the XT30 connector with only one terminal SW1, and the XT30 connector with two terminals SW2, as shown.
